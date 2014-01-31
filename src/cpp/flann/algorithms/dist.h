@@ -372,7 +372,8 @@ struct MaxDistance
 struct HammingLUT
 {
     typedef unsigned char ElementType;
-    typedef int ResultType;
+    //typedef int ResultType;
+    typedef float ResultType;
 
     /** this will count the bits in a ^ b
      */
@@ -471,7 +472,8 @@ template<class T>
 struct HammingPopcnt
 {
     typedef T ElementType;
-    typedef int ResultType;
+    //typedef int ResultType;
+    typedef typename Accumulator<T>::Type ResultType;
 
     template<typename Iterator1, typename Iterator2>
     ResultType operator()(Iterator1 a, Iterator2 b, size_t size, ResultType /*worst_dist*/ = -1) const
@@ -529,7 +531,8 @@ template<typename T>
 struct Hamming
 {
     typedef T ElementType;
-    typedef unsigned int ResultType;
+    //typedef unsigned int ResultType;
+    typedef typename Accumulator<T>::Type ResultType;
 
     /** This is popcount_3() from:
      * http://en.wikipedia.org/wiki/Hamming_weight */

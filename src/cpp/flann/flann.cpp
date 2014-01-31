@@ -271,7 +271,14 @@ flann_index_t flann_build_index_double(double* dataset, int rows, int cols, floa
 
 flann_index_t flann_build_index_byte(unsigned char* dataset, int rows, int cols, float* speedup, FLANNParameters* flann_params)
 {
-    return _flann_build_index<unsigned char>(dataset, rows, cols, speedup, flann_params);
+	if (flann_distance_type==FLANN_DIST_HAMMING) {
+        return __flann_build_index<Hamming<unsigned char> >(dataset, rows, cols, speedup, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_LUT ) {
+        return __flann_build_index<HammingLUT>(dataset, rows, cols, speedup, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_POPCNT ) {
+        return __flann_build_index<HammingPopcnt<unsigned char> >(dataset, rows, cols, speedup, flann_params);
+    }
+	return _flann_build_index<unsigned char>(dataset, rows, cols, speedup, flann_params);
 }
 
 flann_index_t flann_build_index_int(int* dataset, int rows, int cols, float* speedup, FLANNParameters* flann_params)
@@ -503,6 +510,13 @@ int flann_find_nearest_neighbors_double(double* dataset,  int rows, int cols, do
 
 int flann_find_nearest_neighbors_byte(unsigned char* dataset,  int rows, int cols, unsigned char* testset, int tcount, int* result, float* dists, int nn, FLANNParameters* flann_params)
 {
+    if (flann_distance_type==FLANN_DIST_HAMMING) {
+        return __flann_find_nearest_neighbors<Hamming<unsigned char> >(dataset, rows, cols, testset, tcount, result, dists, nn, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_LUT) {
+        return __flann_find_nearest_neighbors<HammingLUT>(dataset, rows, cols, testset, tcount, result, dists, nn, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_POPCNT) {
+        return __flann_find_nearest_neighbors<HammingPopcnt<unsigned char> >(dataset, rows, cols, testset, tcount, result, dists, nn, flann_params);
+	}
     return _flann_find_nearest_neighbors(dataset, rows, cols, testset, tcount, result, dists, nn, flann_params);
 }
 
@@ -593,6 +607,13 @@ int flann_find_nearest_neighbors_index_double(flann_index_t index_ptr, double* t
 
 int flann_find_nearest_neighbors_index_byte(flann_index_t index_ptr, unsigned char* testset, int tcount, int* result, float* dists, int nn, FLANNParameters* flann_params)
 {
+    if (flann_distance_type==FLANN_DIST_HAMMING) {
+        return __flann_find_nearest_neighbors_index<Hamming<unsigned char> >(index_ptr, testset, tcount, result, dists, nn, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_LUT) {
+        return __flann_find_nearest_neighbors_index<HammingLUT>(index_ptr, testset, tcount, result, dists, nn, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_POPCNT) {
+        return __flann_find_nearest_neighbors_index<HammingPopcnt<unsigned char> >(index_ptr, testset, tcount, result, dists, nn, flann_params);
+	}
     return _flann_find_nearest_neighbors_index(index_ptr, testset, tcount, result, dists, nn, flann_params);
 }
 
@@ -795,6 +816,13 @@ int flann_free_index_double(flann_index_t index_ptr, FLANNParameters* flann_para
 
 int flann_free_index_byte(flann_index_t index_ptr, FLANNParameters* flann_params)
 {
+    if (flann_distance_type==FLANN_DIST_HAMMING) {
+        return __flann_free_index<Hamming<unsigned char> >(index_ptr, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_LUT) {
+        return __flann_free_index<HammingLUT>(index_ptr, flann_params);
+    } else if (flann_distance_type==FLANN_DIST_HAMMING_POPCNT) {
+        return __flann_free_index<HammingPopcnt<unsigned char> >(index_ptr, flann_params);
+    }
     return _flann_free_index<unsigned char>(index_ptr, flann_params);
 }
 
